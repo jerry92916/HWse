@@ -1,6 +1,6 @@
 # Week 6 - Docker 微服務架構實作
-
-這週的專案主要是練習 Docker 的多容器部署。把系統解耦成前端、後端與資料庫，並在最外面架一個 Nginx 當作 Reverse Proxy，建立一個基本的 4 層微服務架構。
+## 資工四 111210529 陳宏傑  
+這週的專案是練習 Docker 的多容器部署。把系統解耦成前端、後端與資料庫，並在最外面架一個 Nginx 當作 Reverse Proxy，建立一個基本的 4 層微服務架構。
 
 ## 系統架構
 
@@ -33,7 +33,8 @@
 
 1. 建置並啟動系統：
    ```bash
-   docker compose up --build## 專案目錄與系統架構
+   docker compose up --build 
+## 專案目錄與系統架構
 
 整個系統透過 `docker-compose` 跑在同一個內部網路裡，檔案結構與對應的架構如下：
 
