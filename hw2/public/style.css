@@ -1,0 +1,362 @@
+/* 基礎設定 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Microsoft JhengHei", sans-serif;
+}
+
+body {
+    background-color: #F8F5F0;
+    color: #3E362E;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* 登入畫面 */
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #EAE3D9;
+}
+
+.login-card {
+    background: #FFFFFF;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    width: 380px;
+    text-align: center;
+    border: 1px solid #D6C5B3;
+}
+
+.nqu-logo-login {
+    width: 280px;
+    height: 60px;
+    object-fit: cover;
+    margin-bottom: 20px;
+    border-radius: 4px;
+}
+
+.login-card h2 {
+    color: #5C5248;
+    margin-bottom: 25px;
+    font-size: 20px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #D6C5B3;
+    border-radius: 6px;
+    background-color: #FCFAFA;
+    font-size: 15px;
+    outline: none;
+}
+
+.input-group input:focus {
+    border-color: #B49675;
+    background-color: #FFFFFF;
+}
+
+.login-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #B49675;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+.login-btn:hover {
+    background-color: #9C8062;
+}
+
+/* 主系統介面 */
+.system-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.top-nav {
+    background-color: #FFFFFF;
+    height: 70px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.nqu-logo-sys {
+    width: 240px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    font-size: 24px;
+    background-color: #EAE3D9;
+    padding: 8px;
+    border-radius: 50%;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.user-dept {
+    font-size: 12px;
+    color: #8C8276;
+}
+
+.logout-btn {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background-color: #D6C5B3;
+    color: #4A3F35;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #C2AF9A;
+}
+
+.app-body {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* 左側動態選單 */
+.side-menu {
+    width: 260px;
+    background-color: #FFFFFF;
+    border-right: 1px solid #EAE3D9;
+    padding: 20px 0;
+    overflow-y: auto;
+}
+
+.menu-group {
+    margin-bottom: 25px;
+}
+
+.menu-group h3 {
+    font-size: 13px;
+    color: #A39B90;
+    padding: 0 20px;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.menu-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 12px 20px;
+    background: none;
+    border: none;
+    font-size: 15px;
+    color: #5C5248;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.menu-item:hover {
+    background-color: #F8F5F0;
+    color: #B49675;
+}
+
+.menu-item.active {
+    background-color: #F0E8DD;
+    color: #B49675;
+    border-right: 4px solid #B49675;
+    font-weight: bold;
+}
+
+/* 右側內容區 */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.welcome-banner {
+    background: linear-gradient(135deg, #D6C5B3 0%, #EAE3D9 100%);
+    padding: 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.welcome-banner h1 {
+    font-size: 24px;
+    margin-bottom: 8px;
+    color: #3E362E;
+}
+
+.card {
+    background-color: #FFFFFF;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    margin-bottom: 20px;
+    border: 1px solid #F0E8DD;
+}
+
+.card h4 {
+    color: #B49675;
+    margin-bottom: 10px;
+}
+
+.dashboard-cards {
+    display: flex;
+    gap: 20px;
+}
+
+.dashboard-cards .card {
+    flex: 1;
+}
+
+.action-btn {
+    background-color: #8C9A76;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
+}
+
+.action-btn:hover {
+    background-color: #798765;
+}
+
+/* 一般資料表格 (選課系統用) */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-table th, .data-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #EAE3D9;
+}
+
+.data-table th {
+    background-color: #F8F5F0;
+    color: #5C5248;
+}
+
+/* 網格課表專屬樣式 (我的課表用) */
+.schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px; /* 確保縮小視窗時不會糊在一起 */
+}
+
+.schedule-table th {
+    background-color: #EAE3D9;
+    color: #5C5248;
+    padding: 12px;
+    text-align: center;
+    border: 1px solid #D6C5B3;
+    width: 12%; /* 平均分配寬度 */
+}
+
+.schedule-table td {
+    border: 1px solid #EAE3D9;
+    height: 70px;
+    vertical-align: top;
+    text-align: center;
+    padding: 4px;
+}
+
+.schedule-table .period-cell {
+    background-color: #F8F5F0;
+    vertical-align: middle;
+    font-weight: bold;
+    color: #8C8276;
+    width: 8%; /* 第一欄稍窄 */
+}
+
+/* 有排課的格子狀態 */
+.schedule-table td.filled {
+    background-color: #B49675; /* 填滿時變成米棕色 */
+    color: white;
+    box-shadow: inset 0 0 0 2px #FFF; /* 內邊框營造立體感 */
+}
+
+.course-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* 加選與退選按鈕 */
+.btn-add {
+    background-color: #B49675;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-add:hover {
+    background-color: #9C8062;
+}
+
+.btn-drop {
+    background-color: #D98C8C;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-drop:hover {
+    background-color: #C27070;
+}

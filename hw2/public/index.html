@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>金門大學校務系統</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 第一層：登入畫面 -->
+    <div id="login-view" class="login-wrapper">
+        <div class="login-card">
+            <img src="cover_1563163229.jpeg" alt="NQU Logo" class="nqu-logo-login">
+            <h2>校務資訊系統</h2>
+            <div class="input-group">
+                <input type="text" id="username" placeholder="請輸入學號 (例如：s111210529)">
+            </div>
+            <div class="input-group">
+                <input type="password" id="password" placeholder="請輸入密碼">
+            </div>
+            <button class="login-btn" onclick="handleLogin()">登入系統</button>
+        </div>
+    </div>
+
+    <!-- 第二層：主要校務系統介面 -->
+    <div id="system-view" class="system-wrapper hidden">
+        <!-- 頂部導覽列 -->
+        <header class="top-nav">
+            <div class="logo-area">
+                <img src="cover_1563163229.jpeg" alt="NQU Logo" class="nqu-logo-sys">
+            </div>
+            <div class="user-profile">
+                <span class="avatar">👨‍💻</span>
+                <div class="user-details">
+                    <span class="user-name">陳宏傑</span>
+                    <span class="user-dept">資訊工程學系 三年級 | s111210529</span>
+                </div>
+                <!-- 第三層：登出按鈕 -->
+                <button class="logout-btn" onclick="handleLogout()">登出系統</button>
+            </div>
+        </header>
+
+        <div class="app-body">
+            <!-- 左側動態選單 -->
+            <aside class="side-menu">
+                <div class="menu-group">
+                    <h3>常用服務</h3>
+                    <button class="menu-item active" onclick="switchPage('page-home', this)">🏠 系統首頁</button>
+                    <button class="menu-item" onclick="switchPage('page-leave', this)">📝 線上請假作業</button>
+                    <button class="menu-item" onclick="switchPage('page-course', this)">📚 學生選課系統</button>
+                    <button class="menu-item" onclick="switchPage('page-schedule', this)">📅 我的課表</button>
+                </div>
+                <div class="menu-group">
+                    <h3>各項查詢</h3>
+                    <button class="menu-item" onclick="switchPage('page-grades', this)">📊 學期成績查詢</button>
+                </div>
+            </aside>
+
+            <!-- 右側主內容區 -->
+            <main class="main-content">
+                <!-- 首頁 -->
+                <section id="page-home" class="page-section active-page">
+                    <div class="welcome-banner">
+                        <h1 id="welcome-text">歡迎回來！</h1>
+                        <p>請點擊左側選單開始使用各項教務功能。</p>
+                    </div>
+                    <div class="dashboard-cards">
+                        <div class="card">
+                            <h4>📌 最新公告</h4>
+                            <p>自114學年度起，學期成績單全面改為電子查詢，不再寄發紙本。</p>
+                        </div>
+                        <div class="card">
+                            <h4>🔔 選課提醒</h4>
+                            <p>日間部一至三年級修課學分不得少於 16 學分，請留意選課下限。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 請假作業 (支援圖片上傳與移除) -->
+                <section id="page-leave" class="page-section hidden">
+                    <h2>📝 線上請假作業</h2>
+                    <div class="card">
+                        <p>請上傳您的證明文件（如就醫證明、事假證明等）：</p>
+                        <input type="file" id="leave-file-input" accept="image/*" style="display: none;" onchange="previewImage(event)">
+                        <button class="action-btn" style="margin-top: 10px;" onclick="document.getElementById('leave-file-input').click()">+ 上傳假單證明</button>
+                        
+                        <!-- 圖片預覽區 -->
+                        <div id="image-preview-container" style="margin-top: 20px;"></div>
+                    </div>
+                </section>
+
+                <!-- 選課系統 -->
+                <section id="page-course" class="page-section hidden">
+                    <h2>📚 學生選課系統 (115學年度 第1學期)</h2>
+                    <div class="card">
+                        <p>目前為：<strong>選課階段</strong></p>
+                        <table class="data-table" id="course-table">
+                            <thead>
+                                <tr>
+                                    <th>課程代碼</th>
+                                    <th>課程名稱</th>
+                                    <th>學分</th>
+                                    <th>上課時間</th>
+                                    <th>授課教師</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="course-list">
+                                <!-- JS 動態產生課程 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 我的課表 (網格式 1~日, 1~8節) -->
+                <section id="page-schedule" class="page-section hidden">
+                    <h2>📅 我的課表</h2>
+                    <div class="card" style="overflow-x: auto;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <p>以下是您目前的每週課表：</p>
+                            <p id="total-credits" style="font-weight: bold; color: #B49675; font-size: 18px;">總學分數：0</p>
+                        </div>
+                        <table class="schedule-table">
+                            <thead>
+                                <tr>
+                                    <th>節次</th>
+                                    <th>星期一</th>
+                                    <th>星期二</th>
+                                    <th>星期三</th>
+                                    <th>星期四</th>
+                                    <th>星期五</th>
+                                    <th>星期六</th>
+                                    <th>星期日</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schedule-grid">
+                                <!-- JS 動態產生 8 節課的格子 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 成績查詢 -->
+                <section id="page-grades" class="page-section hidden">
+                    <h2>📊 學期成績查詢</h2>
+                    <div class="card">
+                        <p>請選擇學年度：
+                            <select style="padding: 5px; font-size: 15px; margin-left: 10px; border-radius: 4px; border: 1px solid #D6C5B3;">
+                                <option>115學年度 第1學期</option>
+                                <option>114學年度 第2學期</option>
+                                <option>114學年度 第1學期</option>
+                                <option>113學年度 第2學期</option>
+                                <option>113學年度 第1學期</option>
+                                <option>112學年度 第2學期</option>
+                                <option>112學年度 第1學期</option>
+                            </select>
+                        </p>
+                        <p style="margin-top:20px; color:#888;">（選擇學期後將顯示您的成績資料）</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // --- 登入與登出邏輯 ---
+        function handleLogin() {
+            const user = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+            if(user.trim() === '' || pass.trim() === '') {
+                alert('請輸入學號與密碼！');
+                return;
+            }
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('system-view').classList.remove('hidden');
+        }
+
+        function handleLogout() {
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            document.getElementById('system-view').classList.add('hidden');
+            document.getElementById('login-view').classList.remove('hidden');
+            const homeBtn = document.querySelector('.menu-item');
+            switchPage('page-home', homeBtn);
+        }
+
+        // --- 頁面切換 ---
+        function switchPage(pageId, clickedBtn) {
+            const pages = document.querySelectorAll('.page-section');
+            pages.forEach(page => page.classList.add('hidden'));
+
+            const buttons = document.querySelectorAll('.menu-item');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            document.getElementById(pageId).classList.remove('hidden');
+            clickedBtn.classList.add('active');
+        }
+
+        // --- 假單圖片上傳與移除 ---
+        function previewImage(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const container = document.getElementById('image-preview-container');
+                    // 加入圖片與移除按鈕
+                    container.innerHTML = `
+                        <div style="position: relative; display: inline-block; padding: 15px; border: 1px dashed #B49675; border-radius: 8px; background: #faf8f5;">
+                            <p style="color: #6B8E23; font-weight: bold; margin-bottom: 10px;">✅ 檔案已載入</p>
+                            <img src="${e.target.result}" style="max-width: 100%; max-height: 250px; border-radius: 4px; display: block; margin-bottom: 10px;">
+                            <button onclick="removeImage()" class="btn-drop">移除圖片重新上傳</button>
+                        </div>
+                    `;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removeImage() {
+            // 清空檔案選擇器
+            document.getElementById('leave-file-input').value = "";
+            // 清空預覽畫面
+            document.getElementById('image-preview-container').innerHTML = "";
+        }
+
+        // --- 選課系統與網格課表邏輯 ---
+        // times 陣列格式為："星期-節次" (例如 "1-3" 代表星期一第3節)
+        const allCourses = [
+            { id: "CS301", name: "軟體工程", credits: 3, teacher: "王教授", times: ["2-2", "2-3", "2-4"], timeString: "二 (2,3,4)" },
+            { id: "CS305", name: "資料庫系統", credits: 3, teacher: "李教授", times: ["4-5", "4-6", "4-7"], timeString: "四 (5,6,7)" },
+            { id: "CS402", name: "人工智慧", credits: 3, teacher: "張教授", times: ["1-6", "1-7", "1-8"], timeString: "一 (6,7,8)" },
+            { id: "GE101", name: "大學國文", credits: 2, teacher: "陳教授", times: ["3-3", "3-4"], timeString: "三 (3,4)" },
+            { id: "GE102", name: "進階英文", credits: 2, teacher: "林教授", times: ["5-1", "5-2"], timeString: "五 (1,2)" },
+            { id: "PE201", name: "體育-羽球", credits: 1, teacher: "黃教練", times: ["3-7", "3-8"], timeString: "三 (7,8)" },
+            { id: "GE205", name: "金門學概論", credits: 2, teacher: "吳教授", times: ["6-3", "6-4"], timeString: "六 (3,4)" }
+        ];
+
+        let mySelectedCourses = new Set();
+
+        // 產生空的 8 節課表格
+        function initScheduleGrid() {
+            const tbody = document.getElementById('schedule-grid');
+            tbody.innerHTML = '';
+            for(let period = 1; period <= 8; period++) {
+                const tr = document.createElement('tr');
+                // 第一欄放節次名稱
+                const th = document.createElement('td');
+                th.className = "period-cell";
+                th.innerText = `第 ${period} 節`;
+                tr.appendChild(th);
+
+                // 後面七欄放星期一到星期日
+                for(let day = 1; day <= 7; day++) {
+                    const td = document.createElement('td');
+                    td.id = `cell-${day}-${period}`; // 賦予特定 ID 方便後續填入
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+        }
+
+        function renderCourseSystem() {
+            const tbody = document.getElementById('course-list');
+            tbody.innerHTML = ''; 
+            allCourses.forEach(course => {
+                const isSelected = mySelectedCourses.has(course.id);
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${course.id}</td>
+                    <td>${course.name}</td>
+                    <td>${course.credits}</td>
+                    <td>${course.timeString}</td>
+                    <td>${course.teacher}</td>
+                    <td>
+                        ${isSelected 
+                            ? `<button class="btn-drop" onclick="toggleCourse('${course.id}')">退選</button>`
+                            : `<button class="btn-add" onclick="toggleCourse('${course.id}')">加選</button>`
+                        }
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderMySchedule() {
+            let totalCredits = 0;
+            
+            // 先清空所有格子
+            for(let period = 1; period <= 8; period++) {
+                for(let day = 1; day <= 7; day++) {
+                    const cell = document.getElementById(`cell-${day}-${period}`);
+                    if(cell) {
+                        cell.innerHTML = '';
+                        cell.className = '';
+                    }
+                }
+            }
+
+            // 把選上的課填進格子裡
+            allCourses.forEach(course => {
+                if (mySelectedCourses.has(course.id)) {
+                    totalCredits += course.credits;
+                    course.times.forEach(timeSlot => {
+                        const cell = document.getElementById(`cell-${timeSlot}`);
+                        if(cell) {
+                            cell.innerHTML = `
+                                <div class="course-block">
+                                    <strong>${course.name}</strong><br>
+                                    <span style="font-size: 12px; color: #FFF0E6;">${course.teacher}</span>
+                                </div>
+                            `;
+                            cell.classList.add('filled'); // 加入被填滿的 CSS 樣式
+                        }
+                    });
+                }
+            });
+            document.getElementById('total-credits').innerText = `總學分數：${totalCredits}`;
+        }
+
+        function toggleCourse(courseId) {
+            // 檢查衝堂 (進階可加，這裡簡單實作覆蓋或共存)
+            if (mySelectedCourses.has(courseId)) {
+                mySelectedCourses.delete(courseId);
+            } else {
+                mySelectedCourses.add(courseId);
+            }
+            renderCourseSystem();
+            renderMySchedule();
+        }
+
+        // 系統啟動時初始化
+        initScheduleGrid();
+        renderCourseSystem();
+        renderMySchedule();
+
+    </script>
+</body>
+</html>
