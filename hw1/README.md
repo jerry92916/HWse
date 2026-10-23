@@ -1,12 +1,12 @@
-# MyCurl - Python HTTP Request CLI 工具
-
-MyCurl 是一個使用 Python 與 `requests` 模組打造的命令列工具，完美復刻了 Linux `curl` 的核心體驗。本專案支援超過 25 個核心指令參數，涵蓋自訂標頭、表單傳送、檔案上下傳、Cookie 管理、代理伺服器以及 SSL 憑證忽略等進階功能。
+# hw1 MyCurl - Python HTTP Request CLI 工具
+## 資工四 111210529 陳宏傑
+MyCurl 是一個使用 Python 與 `requests` 模組打造的命令列工具，復刻了 Linux `curl` 的核心體驗。本專案支援超過 25 個核心指令參數，涵蓋自訂標頭、表單傳送、檔案上下傳、Cookie 管理、代理伺服器以及 SSL 憑證忽略等進階功能。
 
 ## 系統需求與安裝
 
-請確保您的系統已安裝 **Python 3.6 或以上版本**。
+請確保系統已安裝 **Python 3.6 或以上版本**。
 
-1. **複製專案**：將 `mycurl.py` 下載或複製到您的本地目錄。
+1. **複製專案**：將 `mycurl.py` 下載或複製到本地目錄。
 2. **安裝依賴套件**：本專案依賴 `requests` 模組來處理 HTTP 請求。
 
 ```bash
@@ -22,7 +22,7 @@ python mycurl.py [options] <url>
 
 支援的參數如下：
 
-### 請求方法與標頭 (Method & Headers)
+### 請求方法與標頭 
 
 | 參數 | 說明 |
 | :--- | :--- |
@@ -32,7 +32,7 @@ python mycurl.py [options] <url>
 | `-e, --referer` | 指定來源網址 (Referer) |
 | `-b, --cookie` | 傳送 Cookie 資料字串或檔案 |
 
-### 請求資料 (Request Data)
+### 請求資料
 
 | 參數 | 說明 |
 | :--- | :--- |
@@ -42,8 +42,7 @@ python mycurl.py [options] <url>
 | `-T, --upload-file` | 上傳指定的本地檔案 |
 | `--json` | 傳送 JSON 格式資料並自動設定 `Content-Type: application/json` |
 
-### 輸出控制 (Output Control)
-
+### 輸出控制 
 | 參數 | 說明 |
 | :--- | :--- |
 | `-o, --output` | 將輸出寫入指定的本地檔案，而非標準輸出 (stdout) |
@@ -53,7 +52,7 @@ python mycurl.py [options] <url>
 | `-s, --silent` | 靜默模式，不顯示進度或錯誤訊息 |
 | `-v, --verbose` | 詳細模式，顯示完整的請求與回應傳輸過程 |
 
-### 連線設定與安全性 (Connection & Security)
+### 連線設定與安全性 
 
 | 參數 | 說明 |
 | :--- | :--- |
@@ -64,7 +63,7 @@ python mycurl.py [options] <url>
 | `-x, --proxy` | 使用指定的 Proxy 伺服器 (例如: `http://proxy:port`) |
 | `-u, --user` | 伺服器 HTTP 基本驗證資訊，格式為 `USER:PASSWORD` |
 
-### 進階選項 (Advanced)
+### 進階選項 
 
 | 參數 | 說明 |
 | :--- | :--- |
@@ -82,7 +81,7 @@ python mycurl.py [options] <url>
 python mycurl.py https://httpbin.org/get
 ```
 
-### 2. 取得遠端檔案並儲存 (類似下載)
+### 2. 取得遠端檔案並儲存
 自動跟隨重新導向，並將結果存為 `index.html`：
 ```bash
 python mycurl.py -L https://google.com -o index.html
@@ -94,20 +93,14 @@ python mycurl.py -L https://google.com -o index.html
 python mycurl.py -X POST https://httpbin.org/post --json '{"user": "HongJie", "role": "admin"}'
 ```
 
-### 4. 檢視詳細的請求與回應標頭 (Debug 模式)
+### 4. 檢視詳細的請求與回應標頭 
 開啟 `-v` (Verbose)，可用於檢查自己送出的 Header 或 Cookie 是否正確：
 ```bash
 python mycurl.py -v https://httpbin.org/headers -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
-### 5. 測試未經信任的 HTTPS 網站 (忽略 SSL 憑證)
+### 5. 測試未經信任的 HTTPS 網站 
 遇到憑證過期或自簽憑證的網站時，使用 `-k` 參數強制連線：
 ```bash
 python mycurl.py -k https://expired.badssl.com/
-```
-
-### 6. 限制請求時間
-設定連線超時與最大執行時間，避免程式卡死：
-```bash
-python mycurl.py https://httpbin.org/delay/5 --connect-timeout 2 -m 5
 ```
