@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7ff">
+    <title>計算｜簡單計算機</title>
+    <style>
+        :root {
+            color-scheme: light;
+            font-family: Inter, "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+            color: #202849;
+            background: #f4f7ff;
+            font-synthesis: none;
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            --muted: #7b849f;
+            --primary: #635bdb;
+            --primary-dark: #5148c7;
+            --line: #e9ebf5;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            min-width: 320px;
+            min-height: 100vh;
+            margin: 0;
+            padding: 48px 20px;
+            background:
+                radial-gradient(ellipse at 10% 8%, #e5e9ff 0, transparent 34%),
+                radial-gradient(ellipse at 94% 88%, #e2f7f2 0, transparent 30%),
+                #f7f8fd;
+        }
+
+        button, input { font: inherit; }
+        button { cursor: pointer; }
+
+        .shell { width: min(100%, 760px); margin: 0 auto; }
+
+        .topbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 0 0 24px 4px;
+        }
+
+        .brand-mark {
+            display: grid;
+            width: 44px;
+            height: 44px;
+            place-items: center;
+            border-radius: 15px;
+            background: linear-gradient(145deg, #7a72f3, #5951cf);
+            box-shadow: 0 8px 18px #635bdb35;
+            color: white;
+            font-size: 24px;
+            font-weight: 750;
+        }
+
+        .brand-name { margin: 0; font-size: 17px; font-weight: 750; letter-spacing: .02em; }
+        .brand-caption { margin: 2px 0 0; color: var(--muted); font-size: 12px; }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(220px, .8fr);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .card {
+            border: 1px solid #ffffff;
+            border-radius: 24px;
+            background: #ffffffed;
+            box-shadow: 0 18px 55px #343b6810, 0 2px 8px #343b6808;
+        }
+
+        .calculator { padding: 28px; }
+
+        .eyebrow {
+            margin: 0 0 8px;
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .13em;
+        }
+
+        h1 { margin: 0; font-size: clamp(24px, 4vw, 30px); letter-spacing: -.04em; }
+        .intro { margin: 8px 0 24px; color: var(--muted); font-size: 14px; }
+
+        .field-label {
+            display: block;
+            margin: 0 0 8px;
+            color: #6b7390;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .operand-row { display: grid; grid-template-columns: 1fr 38px 1fr; gap: 10px; align-items: end; }
+
+        .number-input {
+            width: 100%;
+            height: 54px;
+            padding: 0 14px;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            outline: none;
+            background: #fbfbfe;
+            color: #252d4e;
+            font-size: 18px;
+            font-weight: 650;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .number-input:focus {
+            border-color: #928cf0;
+            box-shadow: 0 0 0 4px #7169e51c;
+        }
+
+        .swap-button {
+            display: grid;
+            width: 38px;
+            height: 38px;
+            margin-bottom: 8px;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: white;
+            color: #777f9b;
+            font-size: 19px;
+            transition: color .15s, background .15s, transform .15s;
+        }
+
+        .swap-button:hover { transform: rotate(180deg); background: #f3f2ff; color: var(--primary); }
+        .operation-title { margin: 21px 0 9px; }
+        .operations { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+
+        .operation {
+            position: relative;
+            display: grid;
+            min-height: 58px;
+            place-content: center;
+            gap: 1px;
+            border: 1px solid var(--line);
+            border-radius: 13px;
+            background: white;
+            color: #606984;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color .15s, color .15s, background .15s;
+        }
+
+        .operation input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+        .operation-symbol { font-size: 20px; font-weight: 750; line-height: 1.15; }
+        .operation-name { font-size: 10px; }
+        .operation:has(input:checked) { border-color: #c9c5ff; background: #f2f1ff; color: var(--primary-dark); }
+        .operation:has(input:focus-visible) { outline: 3px solid #635bdb50; outline-offset: 2px; }
+
+        .result-panel {
+            display: flex;
+            min-height: 110px;
+            flex-direction: column;
+            justify-content: center;
+            margin: 21px 0 16px;
+            padding: 16px 19px;
+            border: 1px solid #e6e5ff;
+            border-radius: 16px;
+            background: linear-gradient(110deg, #f5f4ff, #fafaff);
+        }
+
+        .result-label { color: var(--muted); font-size: 12px; font-weight: 650; }
+        .result-value { overflow-wrap: anywhere; margin-top: 3px; color: #5148c7; font-size: clamp(27px, 6vw, 36px); font-weight: 780; letter-spacing: -.045em; }
+        .result-value.is-placeholder { color: #c6c8d7; }
+
+        .form-error { min-height: 18px; margin: 0 0 8px; color: #c34b5e; font-size: 12px; }
+        .actions { display: grid; grid-template-columns: 1fr auto; gap: 9px; }
+
+        .primary-button, .secondary-button {
+            min-height: 45px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 750;
+            transition: transform .12s, background .12s, box-shadow .12s;
+        }
+
+        .primary-button {
+            border: 0;
+            background: linear-gradient(110deg, #7068e9, #5b53d2);
+            box-shadow: 0 8px 18px #635bdb30;
+            color: white;
+        }
+
+        .primary-button:hover { transform: translateY(-1px); background: var(--primary-dark); }
+        .primary-button:disabled { cursor: wait; opacity: .7; }
+        .secondary-button { padding: 0 16px; border: 1px solid var(--line); background: white; color: #737b95; }
+        .secondary-button:hover { background: #f8f8fc; }
+
+        .history { display: flex; min-height: 100%; flex-direction: column; padding: 24px 20px 18px; }
+        .history-heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        h2 { margin: 0; font-size: 15px; letter-spacing: -.02em; }
+        .clear-history { padding: 5px 0 5px 8px; border: 0; background: transparent; color: var(--muted); font-size: 11px; }
+        .clear-history:hover:not(:disabled) { color: #c34b5e; }
+        .clear-history:disabled { cursor: default; opacity: .45; }
+        .history-list { display: grid; align-content: start; gap: 8px; margin: 15px 0 0; padding: 0; list-style: none; }
+
+        .history-item {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 11px 10px;
+            border: 1px solid #eff0f6;
+            border-radius: 12px;
+            background: #fff;
+            color: #68708a;
+            text-align: left;
+            transition: border-color .15s, background .15s;
+        }
+
+        .history-item:hover { border-color: #d6d3ff; background: #faf9ff; }
+        .history-expression { overflow: hidden; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+        .history-result { flex: none; color: #5148c7; font-size: 12px; font-weight: 750; }
+        .history-empty { margin: 18px 0; color: #9aa0b5; font-size: 12px; line-height: 1.7; }
+        .history-hint { margin: auto 0 0; padding-top: 20px; color: #9aa0b5; font-size: 10px; line-height: 1.7; }
+        .footer-note { margin: 18px 0 0; color: #969cb0; font-size: 11px; text-align: center; }
+
+        @media (max-width: 640px) {
+            body { padding: 25px 14px; }
+            .topbar { margin-bottom: 17px; }
+            .layout { grid-template-columns: 1fr; gap: 13px; }
+            .calculator { padding: 23px 19px; }
+            .history { min-height: 190px; padding: 19px; }
+            .history-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .history-hint { padding-top: 16px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+    <main class="shell">
+        <header class="topbar">
+            <div class="brand-mark" aria-hidden="true">∑</div>
+            <div>
+                <p class="brand-name">計算小屋</p>
+                <p class="brand-caption">清楚、快速，剛剛好的計算工具</p>
+            </div>
+        </header>
+
+        <div class="layout">
+            <section class="card calculator" aria-labelledby="page-title">
+                <p class="eyebrow">QUICK CALCULATOR</p>
+                <h1 id="page-title">今天要算什麼？</h1>
+                <p class="intro">輸入小數或大數，選擇運算方式就可以開始。</p>
+
+                <form id="calcForm">
+                    <div class="operand-row">
+                        <div>
+                            <label class="field-label" for="numA">第一個數字</label>
+                            <input class="number-input" id="numA" name="a" type="number" step="any" value="2" required>
+                        </div>
+                        <button class="swap-button" id="swapBtn" type="button" aria-label="交換兩個數字" title="交換兩個數字">⇄</button>
+                        <div>
+                            <label class="field-label" for="numB">第二個數字</label>
+                            <input class="number-input" id="numB" name="b" type="number" step="any" value="3" required>
+                        </div>
+                    </div>
+
+                    <p class="field-label operation-title" id="operation-label">選擇運算</p>
+                    <div class="operations" role="radiogroup" aria-labelledby="operation-label">
+                        <label class="operation">
+                            <input type="radio" name="operation" value="add" checked>
+                            <span class="operation-symbol" aria-hidden="true">＋</span>
+                            <span class="operation-name">加法</span>
+                        </label>
+                        <label class="operation">
+                            <input type="radio" name="operation" value="subtract">
+                            <span class="operation-symbol" aria-hidden="true">−</span>
+                            <span class="operation-name">減法</span>
+                        </label>
+                        <label class="operation">
+                            <input type="radio" name="operation" value="multiply">
+                            <span class="operation-symbol" aria-hidden="true">×</span>
+                            <span class="operation-name">乘法</span>
+                        </label>
+                        <label class="operation">
+                            <input type="radio" name="operation" value="divide">
+                            <span class="operation-symbol" aria-hidden="true">÷</span>
+                            <span class="operation-name">除法</span>
+                        </label>
+                    </div>
+
+                    <div class="result-panel" aria-live="polite">
+                        <span class="result-label">計算結果</span>
+                        <output class="result-value is-placeholder" id="result" for="numA numB">—</output>
+                    </div>
+                    <p class="form-error" id="error" role="alert"></p>
+                    <div class="actions">
+                        <button class="primary-button" id="calcBtn" type="submit">計算結果 <span aria-hidden="true">→</span></button>
+                        <button class="secondary-button" id="resetBtn" type="button">清除</button>
+                    </div>
+                </form>
+            </section>
+
+            <aside class="card history" aria-labelledby="history-title">
+                <div class="history-heading">
+                    <h2 id="history-title">最近計算</h2>
+                    <button class="clear-history" id="clearHistoryBtn" type="button" disabled>清除紀錄</button>
+                </div>
+                <p class="history-empty" id="historyEmpty">完成計算後，紀錄會出現在這裡。<br>點一下紀錄即可重新載入。</p>
+                <ul class="history-list" id="historyList" aria-label="計算紀錄"></ul>
+                <p class="history-hint">小提醒：支援小數和超大數值；電腦浮點數約有 15–17 位有效數字。</p>
+            </aside>
+        </div>
+        <p class="footer-note">支援小數與超大數值 · 按 Enter 也能快速計算</p>
+    </main>
+
+    <script>
+        const form = document.getElementById('calcForm');
+        const inputA = document.getElementById('numA');
+        const inputB = document.getElementById('numB');
+        const result = document.getElementById('result');
+        const error = document.getElementById('error');
+        const calcButton = document.getElementById('calcBtn');
+        const historyList = document.getElementById('historyList');
+        const historyEmpty = document.getElementById('historyEmpty');
+        const clearHistoryButton = document.getElementById('clearHistoryBtn');
+        const operationLabels = {
+            add: '+',
+            subtract: '−',
+            multiply: '×',
+            divide: '÷'
+        };
+        const errorMessages = {
+            'number overflow': '計算結果太大，超出可計算範圍。',
+            'division by zero': '除數不能是 0。'
+        };
+        const history = [];
+        const numberFormatter = new Intl.NumberFormat('zh-TW', {
+            maximumSignificantDigits: 15,
+            useGrouping: true
+        });
+
+        function selectedOperation() {
+            return document.querySelector('input[name="operation"]:checked').value;
+        }
+
+        function setResult(value) {
+            result.textContent = value === '—' ? value : numberFormatter.format(Number(value));
+            result.classList.toggle('is-placeholder', value === '—');
+        }
+
+        function renderHistory() {
+            historyList.replaceChildren();
+            historyEmpty.hidden = history.length > 0;
+            clearHistoryButton.disabled = history.length === 0;
+
+            for (const item of history) {
+                const row = document.createElement('li');
+                const button = document.createElement('button');
+                const expression = document.createElement('span');
+                const answer = document.createElement('span');
+
+                button.type = 'button';
+                button.className = 'history-item';
+                button.setAttribute('aria-label', `載入 ${item.a} ${operationLabels[item.operation]} ${item.b} 等於 ${item.result}`);
+                expression.className = 'history-expression';
+                expression.textContent = `${item.a} ${operationLabels[item.operation]} ${item.b}`;
+                answer.className = 'history-result';
+                answer.textContent = `= ${item.result}`;
+                button.append(expression, answer);
+                button.addEventListener('click', () => {
+                    inputA.value = item.a;
+                    inputB.value = item.b;
+                    document.querySelector(`input[name="operation"][value="${item.operation}"]`).checked = true;
+                    setResult(item.result);
+                    error.textContent = '';
+                });
+                row.append(button);
+                historyList.append(row);
+            }
+        }
+
+        document.getElementById('swapBtn').addEventListener('click', () => {
+            const previousA = inputA.value;
+            inputA.value = inputB.value;
+            inputB.value = previousA;
+            error.textContent = '';
+        });
+
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            inputA.value = '';
+            inputB.value = '';
+            setResult('—');
+            error.textContent = '';
+            inputA.focus();
+        });
+
+        clearHistoryButton.addEventListener('click', () => {
+            history.length = 0;
+            renderHistory();
+        });
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            setResult('—');
+            error.textContent = '';
+
+            const a = Number(inputA.value);
+            const b = Number(inputB.value);
+            if (!Number.isFinite(a) || !Number.isFinite(b)) {
+                error.textContent = '請輸入有效的數字。';
+                return;
+            }
+
+            const operation = selectedOperation();
+            calcButton.disabled = true;
+            calcButton.textContent = '計算中…';
+
+            try {
+                const response = await fetch('/api/calculate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ a, b, operation })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(errorMessages[data.error] || '計算失敗，請稍後再試。');
+                }
+
+                setResult(String(data.result));
+                history.unshift({ a, b, operation, result: data.result });
+                history.splice(8);
+                renderHistory();
+            } catch (err) {
+                error.textContent = err instanceof Error ? err.message : '無法連線到伺服器。';
+            } finally {
+                calcButton.disabled = false;
+                calcButton.innerHTML = '計算結果 <span aria-hidden="true">→</span>';
+            }
+        });
+
+        renderHistory();
+    </script>
+</body>
+</html>
