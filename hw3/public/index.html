@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7fb">
+  <meta name="description" content="依照學習表現調整的商務英文練習與 AI 家教解析">
+  <title>AI多益學習平台</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="多益學習平台首頁">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span><strong>AI多益學習平台</strong><small>資工四 111210529 陳宏傑</small></span>
+      </a>
+      <div class="side-label">學習空間</div>
+      <nav class="side-nav" aria-label="主要導覽">
+        <button class="nav-link is-active" data-view="dashboard"><span aria-hidden="true">▦</span> 學習儀表板</button>
+        <button class="nav-link" data-view="practice"><span aria-hidden="true">✳</span> 開始練習</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="coach-avatar" aria-hidden="true">✦</div>
+        <p><strong>每天一點進步</strong><span>持續練習，建立英文自信。</span></p>
+        <div class="privacy-note">學習紀錄只保存在這台裝置</div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumb">學習空間 <span>/</span> <strong id="page-label">總覽</strong></div>
+        </div>
+        <div class="topbar-right">
+          <span id="ai-status" class="ai-status"><i></i> 檢查 AI 服務中</span>
+          <div class="avatar" aria-label="學習者">學</div>
+        </div>
+      </header>
+
+      <section id="dashboard-view" class="view">
+        <div class="welcome-row">
+          <div>
+            <p class="eyebrow">YOUR LEARNING JOURNEY</p>
+            <h1>一步一步，<span>學得更有方向。</span></h1>
+            <p class="subheading">根據你的作答表現調整練習，今天想從哪裡開始？</p>
+          </div>
+          <button class="button button-primary" data-open-practice>開始今日練習 <span aria-hidden="true">→</span></button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card"><div class="metric-icon lilac">◷</div><div><span>累積練習</span><strong id="stat-attempts">0 <small>題</small></strong></div><div class="metric-foot">每一次練習都算數</div></article>
+          <article class="metric-card"><div class="metric-icon mint">✓</div><div><span>答題正確率</span><strong id="stat-accuracy">—<small>%</small></strong></div><div class="metric-foot">完成練習後更新</div></article>
+          <article class="metric-card"><div class="metric-icon peach">↗</div><div><span>學習能力指數</span><strong id="stat-score">—</strong></div><div class="metric-foot">依近期表現估算，非官方分數</div></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel progress-panel">
+            <div class="panel-heading"><div><p class="eyebrow">SKILL OVERVIEW</p><h2>能力分布</h2></div><span class="legend"><i></i> 正確率</span></div>
+            <div class="chart-wrap">
+              <svg id="skill-chart" viewBox="0 0 360 270" role="img" aria-label="文法、單字、閱讀、聽力能力雷達圖"></svg>
+            </div>
+            <div class="skill-legend"><span><i class="dot dot-lilac"></i>文法</span><span><i class="dot dot-mint"></i>單字</span><span><i class="dot dot-peach"></i>閱讀</span><span><i class="dot dot-blue"></i>聽力</span></div>
+          </section>
+
+          <section class="panel focus-panel">
+            <div class="panel-heading"><div><p class="eyebrow">PERSONALIZED NEXT STEP</p><h2>你的補強建議</h2></div><span class="sparkle" aria-hidden="true">✦</span></div>
+            <div id="recommendation" class="recommendation">
+              <div class="recommendation-icon">✧</div>
+              <h3>讓練習開始累積</h3>
+              <p>完成幾題後，我們會整理你的答題表現，找出最值得優先練習的方向。</p>
+            </div>
+            <button class="button button-soft" data-open-practice>依建議開始練習 <span aria-hidden="true">→</span></button>
+          </section>
+        </div>
+
+        <section class="panel recent-panel">
+          <div class="panel-heading"><div><p class="eyebrow">RECENT ACTIVITY</p><h2>最近練習</h2></div><button id="clear-history" class="text-button" type="button">清除紀錄</button></div>
+          <div id="recent-list" class="recent-list"><div class="empty-state">完成第一題後，作答紀錄會出現在這裡。</div></div>
+        </section>
+      </section>
+
+      <section id="practice-view" class="view is-hidden">
+        <div class="practice-heading">
+          <p class="eyebrow">PERSONALIZED PRACTICE</p>
+          <h1>練習你的下一步。</h1>
+          <p class="subheading">選擇題型與感興趣的情境，開始一組專屬練習。</p>
+        </div>
+        <section class="panel setup-panel">
+          <form id="practice-form">
+            <div class="form-grid">
+              <label>練習題型
+                <select id="part-select">
+                  <optgroup label="聽力練習">
+                    <option value="part2">Part 2・問答應答</option>
+                    <option value="part3">Part 3・職場對話</option>
+                    <option value="part4">Part 4・簡短獨白</option>
+                  </optgroup>
+                  <optgroup label="閱讀與文法">
+                    <option value="part5">Part 5・句子填空</option>
+                    <option value="part6">Part 6・短文填空</option>
+                    <option value="part7">Part 7・閱讀理解</option>
+                  </optgroup>
+                </select>
+              </label>
+              <label>情境主題
+                <select id="topic-select">
+                  <option value="科技與軟體工程">科技與軟體工程</option>
+                  <option value="電子商務與零售">電子商務與零售</option>
+                  <option value="行銷、廣告與社群媒體">行銷、廣告與社群媒體</option>
+                  <option value="會議、簡報與專案管理">會議、簡報與專案管理</option>
+                  <option value="客戶服務與商務溝通">客戶服務與商務溝通</option>
+                  <option value="人力資源與職場生活">人力資源與職場生活</option>
+                  <option value="旅遊、交通與商務差旅">旅遊、交通與商務差旅</option>
+                  <option value="餐飲、飯店與觀光">餐飲、飯店與觀光</option>
+                  <option value="金融、銀行與會計">金融、銀行與會計</option>
+                  <option value="物流、倉儲與供應鏈">物流、倉儲與供應鏈</option>
+                  <option value="醫療、健康與保險">醫療、健康與保險</option>
+                  <option value="環境保護與企業永續">環境保護與企業永續</option>
+                  <option value="教育、培訓與研討會">教育、培訓與研討會</option>
+                  <option value="房地產與建築工程">房地產與建築工程</option>
+                  <option value="custom">自訂主題⋯</option>
+                </select>
+              </label>
+              <label id="custom-topic-label" class="is-hidden">自訂主題
+                <input id="custom-topic-input" maxlength="80" placeholder="例如：跨國新創募資、咖啡品牌經營">
+              </label>
+              <label>補強方向
+                <select id="category-select">
+                  <option value="">依表現自動安排</option>
+                  <option value="grammar">文法</option>
+                  <option value="vocabulary">單字</option>
+                  <option value="reading">閱讀</option>
+                  <option value="listening">聽力</option>
+                </select>
+              </label>
+              <label id="accent-label" class="is-hidden">聽力口音
+                <select id="accent-select">
+                  <option value="en-US">美式 English (US)</option>
+                  <option value="en-GB">英式 English (UK)</option>
+                  <option value="en-AU">澳洲 English (AU)</option>
+                  <option value="en-CA">加拿大 English (CA)</option>
+                </select>
+              </label>
+            </div>
+            <div class="form-note"><span>✦</span><span id="generation-note">最多 5 題一組。設定 OPENAI_API_KEY 後可啟用依主題生成與 AI 解析。</span></div>
+            <button id="start-button" class="button button-primary start-button" type="submit">開始 5 題練習 <span aria-hidden="true">→</span></button>
+          </form>
+        </section>
+        <section id="quiz-panel" class="panel quiz-panel is-hidden" aria-live="polite">
+          <div id="quiz-content"></div>
+        </section>
+      </section>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+      <footer>LinguaPath 為獨立英語學習示範平台，與 ETS 及 TOEIC® 測驗無隸屬或背書關係。<span>© 2026 LinguaPath</span></footer>
+    </main>
+  </div>
+</body>
+</html>
