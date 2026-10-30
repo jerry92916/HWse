@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3eadc">
+    <title>AI客服工單系統</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <a class="brand" href="/" aria-label="AI客服工單系統">
+          <span class="brand-mark">✳</span>
+          <span class="brand-copy">
+            <span class="brand-title">AI<br>客服工單系統</span>
+            <span class="brand-subtitle">資工四 111210529 陳宏傑</span>
+          </span>
+        </a>
+        <div class="workspace-label">WORKSPACE</div>
+        <button class="nav-item active" type="button">
+          <span class="nav-icon">▤</span> 工單收件匣 <span class="nav-count" id="open-count">0</span>
+        </button>
+        <div class="sidebar-bottom">
+          <div class="ai-card">
+            <div class="ai-card-icon">✳</div>
+            <strong>AI 智慧分流</strong>
+            <p id="sidebar-ai-copy">分類每一則客戶訊息，讓團隊更快找到解法。</p>
+            <span class="ai-status"><i></i><span id="sidebar-ai-mode">示範模式</span></span>
+          </div>
+          <div class="profile">
+            <div class="avatar avatar-agent">JD</div>
+            <div><strong>客服團隊</strong><small>Support workspace</small></div>
+            <span class="profile-menu">···</span>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div class="breadcrumbs">工作區 <span>/</span> <strong>工單收件匣</strong></div>
+          <div class="top-actions">
+            <span class="today-label" id="today-label"></span>
+            <button class="button button-primary" id="new-ticket-button" type="button"><span>＋</span> 建立工單</button>
+          </div>
+        </header>
+
+        <section class="page-content">
+          <div class="page-heading">
+            <div>
+              <div class="eyebrow">CUSTOMER SUPPORT</div>
+              <h1>工單收件匣<span class="heading-dot">.</span></h1>
+              <p>掌握每個客戶需求，讓每次回覆都更到位。</p>
+            </div>
+            <div class="ai-mode-pill" id="ai-mode-pill"><span class="sparkle">✳</span> 正在連線 AI...</div>
+          </div>
+
+          <section class="stats-grid" aria-label="工單統計">
+            <article class="stat-card">
+              <div class="stat-top"><span>全部工單</span><span class="stat-icon icon-lavender">▤</span></div>
+              <strong id="stat-total">0</strong><small>所有客戶訊息</small>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>待處理</span><span class="stat-icon icon-orange">◷</span></div>
+              <strong id="stat-open">0</strong><small>等候團隊回覆</small>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>處理中</span><span class="stat-icon icon-blue">↗</span></div>
+              <strong id="stat-progress">0</strong><small>團隊正在跟進</small>
+            </article>
+            <article class="stat-card">
+              <div class="stat-top"><span>已解決</span><span class="stat-icon icon-green">✓</span></div>
+              <strong id="stat-resolved">0</strong><small>已完成的工單</small>
+            </article>
+          </section>
+
+          <section class="inbox-layout">
+            <div class="inbox-panel">
+              <div class="inbox-header">
+                <div><h2>所有工單</h2><span class="result-count" id="result-count">0 張工單</span></div>
+                <button class="icon-button" id="refresh-button" type="button" aria-label="重新整理" title="重新整理">↻</button>
+              </div>
+              <div class="filters">
+                <label class="search-box">
+                  <span aria-hidden="true">⌕</span>
+                  <input id="search-input" type="search" placeholder="搜尋工單..." autocomplete="off">
+                  <kbd>⌘ K</kbd>
+                </label>
+                <div class="filter-row">
+                  <select id="status-filter" aria-label="依狀態篩選">
+                    <option value="">所有狀態</option>
+                    <option value="open">待處理</option>
+                    <option value="in_progress">處理中</option>
+                    <option value="resolved">已解決</option>
+                  </select>
+                  <select id="category-filter" aria-label="依分類篩選">
+                    <option value="">所有分類</option>
+                    <option value="billing">帳務與付款</option>
+                    <option value="technical">技術問題</option>
+                    <option value="account">帳戶與登入</option>
+                    <option value="shipping">訂單與配送</option>
+                    <option value="other">其他問題</option>
+                  </select>
+                </div>
+              </div>
+              <div class="ticket-list" id="ticket-list" aria-live="polite">
+                <div class="loading-state"><span class="spinner"></span> 正在載入工單...</div>
+              </div>
+              <div class="list-footer"><span class="live-dot"></span> 工單資料已同步</div>
+            </div>
+
+            <section class="detail-panel" id="detail-panel" aria-live="polite">
+              <div class="empty-detail">
+                <div class="empty-illustration"><span>✳</span><i></i><b></b></div>
+                <h2>選擇一張工單</h2>
+                <p>從左側收件匣選取工單，查看客戶訊息、AI 分析與回覆建議。</p>
+                <button class="button button-secondary" id="empty-new-ticket" type="button">＋ 建立第一張工單</button>
+              </div>
+            </section>
+          </section>
+          <footer class="page-footer">ORBIT DESK <span>·</span> 用 AI 讓每一次服務都恰到好處</footer>
+        </section>
+      </main>
+    </div>
+
+    <dialog class="ticket-dialog" id="ticket-dialog" aria-labelledby="dialog-title">
+      <form class="dialog-form" id="ticket-form">
+        <div class="dialog-heading">
+          <div><div class="eyebrow">NEW REQUEST</div><h2 id="dialog-title">建立新工單</h2></div>
+          <button class="icon-button" id="close-dialog" type="button" aria-label="關閉">×</button>
+        </div>
+        <p class="dialog-intro">送出後 AI 會自動分析問題分類、優先層級，並草擬一份回覆建議。</p>
+        <label>客戶姓名<input name="customerName" required minlength="2" maxlength="80" placeholder="例如：林小明"></label>
+        <label>電子郵件<input name="customerEmail" type="email" required maxlength="254" placeholder="name@example.com"></label>
+        <label>問題主旨<input name="subject" required minlength="3" maxlength="120" placeholder="簡短描述遇到的問題"></label>
+        <label>問題描述<textarea name="message" required minlength="10" maxlength="5000" rows="5" placeholder="請提供問題細節，讓客服團隊更快協助您..."></textarea></label>
+        <div class="dialog-error" id="form-error" role="alert" hidden></div>
+        <div class="dialog-actions">
+          <button class="button button-secondary" id="cancel-dialog" type="button">取消</button>
+          <button class="button button-primary" id="submit-ticket" type="submit"><span>✳</span> <span id="submit-label">建立並分析</span></button>
+        </div>
+      </form>
+    </dialog>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
