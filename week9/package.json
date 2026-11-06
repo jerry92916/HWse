@@ -1,0 +1,15 @@
+{
+  "name": "courtside-nba-player-archive",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A responsive Traditional Chinese NBA player directory hosted on Cloudflare Pages.",
+  "scripts": {
+    "dev": "wrangler pages dev . --compatibility-date=2026-11-06",
+    "update-rosters": "node scripts/update-rosters.js",
+    "predeploy": "npm run update-rosters",
+    "deploy": "wrangler pages deploy . --project-name courtside-nba"
+  },
+  "devDependencies": {
+    "wrangler": "^4.158.0"
+  }
+}

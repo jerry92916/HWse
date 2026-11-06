@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f3ecdf">
+    <meta name="description" content="走進 NBA 球星的球場風格與成長故事，收藏你最喜歡的球員。">
+    <title>COURTSIDE — NBA 球星圖鑑</title>
+    <link rel="preconnect" href="https://a.espncdn.com">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="brand-cluster">
+        <a class="brand" href="#" aria-label="COURTSIDE 首頁">
+          <span class="brand-mark" aria-hidden="true">C</span>
+          <span class="brand-name">COURT<span>SIDE</span><small>THE NBA PLAYER ARCHIVE</small></span>
+        </a>
+        <span class="student-credit">資工四<br>111210529 陳宏傑</span>
+      </div>
+      <nav class="main-nav" aria-label="主要導覽">
+        <a class="nav-link active" href="#players">球員圖鑑</a>
+        <a class="nav-link" href="#about">關於本站</a>
+      </nav>
+      <a class="header-cta" href="#players">探索球員 <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> BASKETBALL, UP CLOSE</p>
+          <h1 id="hero-title">偉大，不只<br>在<span class="accent-text">數據</span>之上。</h1>
+          <p class="hero-description">認識球衣背後的故事。從改變比賽的傳奇，到定義下一個時代的新星，找到屬於你的球場主角。</p>
+          <a class="primary-button" href="#players">探索球員圖鑑 <span aria-hidden="true">↓</span></a>
+          <div class="hero-note"><span class="live-dot"></span> <span id="roster-status">正在載入 NBA 現役球員名單…</span></div>
+        </div>
+        <div class="hero-art" aria-label="LeBron James 球員專題">
+          <div class="hero-orbit orbit-one"></div>
+          <div class="hero-orbit orbit-two"></div>
+          <div class="hero-number" aria-hidden="true">23</div>
+          <div class="hero-player">
+            <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/2544.png" alt="LeBron James">
+          </div>
+          <div class="hero-card">
+            <span class="hero-card-label">THE KING</span>
+            <strong>LeBron James</strong>
+            <span>一場跨越世代的旅程</span>
+          </div>
+          <span class="hero-side-label">LOS ANGELES · FORWARD</span>
+          <span class="hero-sticker" aria-hidden="true">EST.<br>2003</span>
+        </div>
+        <div class="hero-index" aria-hidden="true">NBA · 30 TEAMS</div>
+      </section>
+
+      <section class="ticker" aria-label="網站主題">
+        <span>THE GAME IS NEVER JUST A GAME</span><i aria-hidden="true">✳</i>
+        <span>每個球星，都有自己的主場</span><i aria-hidden="true">✳</i>
+        <span>THE GAME IS NEVER JUST A GAME</span>
+      </section>
+
+      <section class="players-section page-shell" id="players" aria-labelledby="players-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> PLAYER DIRECTORY / ACTIVE ROSTERS</p>
+            <h2 id="players-title">認識<span class="accent-text">球員</span></h2>
+          </div>
+          <p class="section-intro">不同位置，不同打法。<br>找到你欣賞比賽的方式。</p>
+        </div>
+
+        <div class="directory-toolbar">
+          <div class="filter-list" role="group" aria-label="依球場位置篩選">
+            <button class="filter-button active" type="button" data-filter="all" aria-pressed="true">全部球員 <span id="player-total">…</span></button>
+            <button class="filter-button" type="button" data-filter="guard" aria-pressed="false">後衛</button>
+            <button class="filter-button" type="button" data-filter="forward" aria-pressed="false">前鋒</button>
+            <button class="filter-button" type="button" data-filter="center" aria-pressed="false">中鋒</button>
+            <button class="filter-button favorites-filter" type="button" data-filter="favorites" aria-pressed="false"><span aria-hidden="true">♡</span> 我的收藏</button>
+          </div>
+          <label class="search-box">
+            <span class="sr-only">搜尋球員或球隊</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+            <input id="player-search" type="search" placeholder="搜尋球員..." autocomplete="off">
+            <kbd>/</kbd>
+          </label>
+        </div>
+
+        <div class="results-meta"><span id="results-count" aria-live="polite">正在載入現役球員名單…</span><span>共 <span id="player-total-count">…</span> 位球員 · 點選卡片查看介紹 <span aria-hidden="true">↗</span></span></div>
+        <div class="player-grid" id="player-grid" aria-live="polite"></div>
+        <p class="empty-state roster-error" id="roster-error" role="alert" hidden>目前無法載入球員名單，請稍後重新整理頁面。</p>
+        <p class="empty-state" id="empty-state" hidden>找不到符合條件的球員，試試其他關鍵字。</p>
+      </section>
+
+      <section class="manifesto" id="about">
+        <div class="manifesto-inner">
+          <span class="manifesto-mark" aria-hidden="true">“</span>
+          <div>
+            <p class="eyebrow">MORE THAN A BOX SCORE</p>
+            <h2>比賽會結束，<br><span class="accent-text">故事不會。</span></h2>
+          </div>
+          <p class="manifesto-copy">COURTSIDE 是一份給球迷的 NBA 球員圖鑑。用球風、歷程與關鍵時刻，重新認識你熟悉的名字，也發現下一位想追隨的球員。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand footer-brand" href="#">
+        <span class="brand-mark" aria-hidden="true">C</span>
+        <span class="brand-name">COURT<span>SIDE</span><small>THE NBA PLAYER ARCHIVE</small></span>
+      </a>
+      <p>為熱愛比賽的人而做。<span>© 2026 COURTSIDE</span></p>
+      <a class="back-to-top" href="#" aria-label="回到頁首">回到頂端 ↑</a>
+    </footer>
+
+    <dialog class="player-dialog" id="player-dialog" aria-labelledby="dialog-name">
+      <button class="dialog-close" type="button" aria-label="關閉球員介紹">×</button>
+      <div class="dialog-content" id="dialog-content"></div>
+    </dialog>
+  </body>
+</html>
