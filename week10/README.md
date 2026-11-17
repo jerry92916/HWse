@@ -4,7 +4,7 @@
 
 ## JSR 套件資訊
 
-- 套件名稱：[`@courtside-roste/roster`](https://jsr.io/@courtside-roste/roster@0.1.0)
+- 套件庫：https://jsr.io/@courtside-roste/roster@0.1.0
 - 已發布版本：`0.1.0`
 - Scope：`courtside-roste`
 - Package name：`roster`
