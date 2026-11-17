@@ -1,0 +1,11 @@
+[package]
+name = "courtside-roster"
+version = "0.1.0"
+edition = "2021"
+description = "Validate, search, and filter COURTSIDE NBA roster data."
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/jerry92916/HWse"
+
+[dependencies]
+serde_json = "1"

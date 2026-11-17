@@ -1,0 +1,28 @@
+{
+  "source": "sample",
+  "updatedAt": "2026-01-01T00:00:00.000Z",
+  "teamCount": 30,
+  "playerCount": 2,
+  "players": [
+    {
+      "id": "2544",
+      "name": "LeBron James",
+      "team": "Los Angeles Lakers",
+      "teamAbbreviation": "LAL",
+      "teamLocal": "洛杉磯湖人",
+      "position": "前鋒",
+      "group": "forward",
+      "number": "23"
+    },
+    {
+      "id": "201939",
+      "name": "Stephen Curry",
+      "team": "Golden State Warriors",
+      "teamAbbreviation": "GS",
+      "teamLocal": "金州勇士",
+      "position": "後衛",
+      "group": "guard",
+      "number": "30"
+    }
+  ]
+}
